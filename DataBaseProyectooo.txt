@@ -1,0 +1,154 @@
+create database proyectomarketplace;
+use proyectomarketplace;
+
+create table Categorias (
+idCategoria int primary key not null auto_increment,
+Nombre varchar (50) not null);
+
+create table Usuarios (
+idUsuario int primary key not null auto_increment, 
+DNI varchar (20) not null,
+Telefono varchar (30) not null, Contraseña varchar (18) not null,
+Email varchar (30) not null,
+Nombres varchar (50) not null,
+Apellidos varchar (50) not null,
+Direccion varchar (50) not null,
+Pais varchar (30) not null,
+Provincia varchar (20) not null,
+CodigoPostal varchar (10) not null,
+Ciudad varchar (30), Calle varchar (30), Numeracion varchar (30));
+
+create table Facturas (
+IdFactura int primary key not null auto_increment,
+Fecha datetime not null,
+Montototal decimal (15,2) not null);
+
+create table Productos (
+idProducto int primary key not null auto_increment,
+idCategoria int not null, idUsuario int not null,
+Stock int not null, Fecha_Subido date not null,
+Descripcion varchar (250) not null,
+Precio decimal (15,2) not null,
+foreign key (idCategoria) references categorias(idCategoria),
+foreign key (idUsuario) references Usuarios(idUsuario));
+
+create table Pedidos (
+idPedido int primary key not null auto_increment,
+idUsuario int not null,
+idFactura int not null,
+Estado enum("Entregado","Pendiente","Cancelado","Enviado","Pagado","Reembolso"),
+Fecha datetime not null,
+foreign key (idUsuario) references Usuarios(idUsuario),
+foreign key (idFactura) references Facturas(idFactura));
+
+create table detalle_pedido (
+idProducto int not null,
+idPedido int not null,
+Precio decimal (15,2) not null,
+Cantidad int not null,
+Primary key (idProducto, idPedido),
+Foreign key (idProducto) references Productos(idProducto),
+Foreign key (idPedido) references Pedidos(idPedido));
+
+INSERT INTO Categorias (nombre) VALUES ('Ropa');
+INSERT INTO Categorias (nombre) VALUES ('Electrónica');
+INSERT INTO Categorias (nombre) VALUES ('Audio y Video');
+INSERT INTO Categorias (nombre) VALUES ('Hogar y Cocina');
+INSERT INTO Categorias (nombre) VALUES ('Gaming');
+INSERT INTO Categorias (nombre) VALUES ('Deportes y Aire Libre');
+INSERT INTO Categorias (nombre) VALUES ('Juguetes y Entretenimiento');
+INSERT INTO Categorias (nombre) VALUES ('Belleza y Cuidado Personal');
+INSERT INTO Categorias (nombre) VALUES ('Libros y Papelería');
+INSERT INTO Categorias (nombre) VALUES ('Accesorios para Vehículos');
+
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('39458210', '+54 381 5678912', 'Contraseña1', 'anatorres@mail.com', 'Ana', 'Torres', 'Av. Belgrano 1220', 'Argentina', 'Tucumán', '4000', 'San Miguel de Tucumán', 'Av. Belgrano', '1220');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('41820355', '+54 11 4382910', 'Clav3Secreta', 'lucas.perez@gmail.com', 'Lucas', 'Pérez', 'Calle Sucre 450', 'Argentina', 'Buenos Aires', '1706', 'Morón', 'Sucre', '450');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('40255891', '+54 351 6972031', 'Pass123456', 'sofi_gomez@hotmail.com', 'Sofía', 'Gómez', 'Bv. San Juan 850', 'Argentina', 'Córdoba', '5000', 'Córdoba', 'Bv. San Juan', '850');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('37891234', '+54 381 4459033', 'ClaveSegura22', 'martin.diaz@yahoo.com', 'Martín', 'Díaz', 'Calle Rivadavia 310', 'Argentina', 'Tucumán', '4000', 'San Miguel de Tucumán', 'Rivadavia', '310');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('42670988', '+54 299 5823310', 'abc123456', 'carla.ruiz@mail.com', 'Carla', 'Ruiz', 'San Martín 1500', 'Argentina', 'Neuquén', '8300', 'Neuquén', 'San Martín', '1500');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('40562319', '+54 221 7789021', 'MiPass2024', 'federico.lopez@gmail.com', 'Federico', 'López', 'Diag. 80 925', 'Argentina', 'Buenos Aires', '1900', 'La Plata', 'Diag. 80', '925');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('38945602', '+54 11 50123499', 'Passw0rd98', 'valentina.mendez@mail.com', 'Valentina', 'Méndez', 'Calle Lima 640', 'Argentina', 'Buenos Aires', '1084', 'CABA', 'Lima', '640');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('43120588', '+54 381 6678832', 'ClaveClave33', 'diego.farias@gmail.com', 'Diego', 'Farías', 'Av. Alem 200', 'Argentina', 'Tucumán', '4000', 'Yerba Buena', 'Av. Alem', '200');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('41234990', '+54 261 5512030', 'Segura741', 'mariana.rios@hotmail.com', 'Mariana', 'Ríos', 'Godoy Cruz 540', 'Argentina', 'Mendoza', '5500', 'Mendoza', 'Godoy Cruz', '540');
+INSERT INTO Usuarios (DNI, Telefono, Contraseña, Email, Nombres, Apellidos, Direccion, Pais, Provincia, CodigoPostal, Ciudad, Calle, Numeracion)
+VALUES ('39567820', '+54 381 4428999', 'Clave2025', 'juliancastro@mail.com', 'Julián', 'Castro', 'Calle San Lorenzo 760', 'Argentina', 'Tucumán', '4107', 'Tafí Viejo', 'San Lorenzo', '760');
+
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-10 14:35:00', 12500.50);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-11 09:20:00', 45999.00);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-12 18:45:00', 29999.50);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-13 11:10:00', 21999.00);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-14 16:05:00', 12499.75);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-15 13:30:00', 185000.00);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-16 10:15:00', 15499.99);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-17 20:40:00', 34999.00);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-18 08:50:00', 8999.00);
+INSERT INTO Facturas (Fecha, MontoTotal) VALUES ('2025-01-19 19:25:00', 25999.90);
+
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (1, 1, 'Entregado', '2025-01-10 15:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (2, 2, 'Pagado', '2025-01-11 10:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (3, 3, 'Pendiente', '2025-01-12 19:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (4, 4, 'Enviado', '2025-01-13 12:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (5, 5, 'Cancelado', '2025-01-14 17:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (3, 6, 'Entregado', '2025-01-15 14:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (2, 7, 'Reembolso', '2025-01-16 11:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (1, 8, 'Pagado', '2025-01-17 21:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (4, 9, 'Pendiente', '2025-01-18 09:00:00');
+INSERT INTO Pedidos (idUsuario, idFactura, Estado, Fecha) VALUES (5, 10, 'Enviado', '2025-01-19 20:00:00');
+
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (1, 1, 50, '2025-01-12', 'Camiseta de algodón talla M color negro', 8999.90);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (2, 2, 15, '2025-01-08', 'Smartwatch con monitor de ritmo cardíaco', 45999.00);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (3, 3, 8, '2025-01-10', 'Auriculares bluetooth con cancelación de ruido', 29999.50);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (1, 4, 120, '2025-01-15', 'Pantalón jean azul clásico talla 42', 21999.00);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (4, 5, 30, '2025-01-18', 'Juego de tenedores y cuchillos de acero inoxidable (12 piezas)', 12499.75);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (2, 3, 5, '2025-01-19', 'Smartphone 6.5" 128GB 6GB RAM color azul', 185000.00);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (5, 2, 20, '2025-01-11', 'Mouse gamer RGB con 7 botones programables', 15499.99);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (3, 1, 10, '2025-01-09', 'Teclado mecánico retroiluminado switches red', 34999.00);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (6, 4, 40, '2025-01-16', 'Botella térmica de acero inoxidable 750ml', 8999.00);
+INSERT INTO Productos (idCategoria, idUsuario, Stock, Fecha_Subido, Descripcion, Precio)
+VALUES (4, 5, 12, '2025-01-17', 'Olla antiadherente 24cm con recubrimiento cerámico', 25999.90);
+
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (1, 1, 8999.90, 2);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (1, 3, 29999.50, 1);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (2, 2, 45999.00, 1);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (3, 4, 21999.00, 1);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (4, 5, 12499.75, 3);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (5, 6, 185000.00, 1);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (6, 7, 15499.99, 2);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (7, 8, 34999.00, 1);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (8, 9, 8999.00, 4);
+INSERT INTO Detalle_Pedido (idPedido, idProducto, Precio, Cantidad)
+VALUES (9, 10, 25999.90, 1);
+
+select * from Categorias;
+select * from Usuarios;
+select * from facturas;
+select * from Pedidos;
+select * from Productos;
+select * from detalle_pedido;
