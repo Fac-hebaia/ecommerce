@@ -1,18 +1,17 @@
 from tkinter import *
 from tkinter import messagebox
-from mysql.connector import *
 from PIL import Image, ImageTk
-from conexion import Conexion
+from database.config import SessionLocal
 
 imagen = Image.open("assets/images/perritosaltando.jpg")
 imagen_editada = imagen.resize((500, 1000))
-mi_conexion = Conexion("LocalHost", "root", "root", "marketplace")
-conexion = mi_conexion.conectar()
 
 
 class Cliente(Tk):
 
     def CrearCuenta(self):
+        from database.models.usuario_model import Usuario
+
         nombre = self.entry_nombre.get()
         apellidos = self.entry_apellidos.get()
         contraseña = self.entry_contraseña.get()
@@ -25,22 +24,23 @@ class Cliente(Tk):
         direccion = self.entry_direccion.get()
         telefono = self.entry_telefono.get()
         try:
-            mi_conexion.consulta(
-                "INSERT INTO usuarios (nombres, apellidos, contrasenia, email, dni, pais, provincia, ciudad, codigoPostal, direccion, telefono) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (
-                    nombre,
-                    apellidos,
-                    contraseña,
-                    email,
-                    dni,
-                    pais,
-                    provincia,
-                    ciudad,
-                    codigopostal,
-                    direccion,
-                    telefono,
-                ),
+            db = SessionLocal()
+            nuevo_usuario = Usuario(
+                nombres=nombre,
+                apellidos=apellidos,
+                contrasenia=contraseña,
+                email=email,
+                dni=dni,
+                pais=pais,
+                provincia=provincia,
+                ciudad=ciudad,
+                codigoPostal=codigopostal,
+                direccion=direccion,
+                telefono=telefono,
             )
+            db.add(nuevo_usuario)
+            db.commit()
+            db.close()
 
             messagebox.showinfo("Registro Exitoso", "Te has registrado exitosamente.")
             self.destroy()
@@ -48,8 +48,7 @@ class Cliente(Tk):
 
             ventana_principal = MainWindow()
             ventana_principal.mainloop()
-
-        except Error as e:
+        except Exception as e:
             messagebox.showerror("Hubo un error en el registro", f"Error: {e}")
 
     def __init__(self):
@@ -199,3 +198,8 @@ class Cliente(Tk):
             command=self.CrearCuenta,
         )
         self.boton_registrar.place(relx=0.65, rely=0.95)
+
+
+if __name__ == "__main__":
+    app = Cliente()
+    app.mainloop()

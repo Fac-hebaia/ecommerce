@@ -1,10 +1,6 @@
 from customtkinter import *
-from mysql.connector import *
-from conexion import Conexion
 from PIL import Image, ImageTk
 
-mi_conexion = Conexion("LocalHost", "root", "root", "marketplace")
-conexion = mi_conexion.conectar()
 Imagen_esquina = Image.open("assets/images/imagen.jpg")
 Imagen_esquina_editada = Imagen_esquina.resize((200, 200))
 
@@ -95,3 +91,8 @@ class MainWindow(CTk):
         # Frame contenido principal
         Frame_contenido = CTkFrame(self, width=1250, height=1250, corner_radius=20)
         Frame_contenido.grid(row=1, column=1, padx=10, pady=10)
+
+
+if __name__ == "__main__":
+    app = MainWindow()
+    app.mainloop()

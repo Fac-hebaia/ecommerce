@@ -1,14 +1,10 @@
-from conexion import Conexion
-
 from customtkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
-from mysql.connector import Error
+from database.repositories.usuario_repository import UsuarioRepository
 
 imagen = Image.open("assets/images/perritosaltando.jpg")
 imagen_editada = imagen.resize((500, 1000))
-mi_conexion = Conexion("LocalHost", "root", "root", "marketplace")
-conexion = mi_conexion.conectar()
 
 
 class IniciarSesion(CTk):
@@ -16,16 +12,14 @@ class IniciarSesion(CTk):
     def iniciar_sesion(self):
         usuario = self.entry_usuario.get()
         contraseña = self.entry_contraseña.get()
-        micursor = mi_conexion.connection.cursor() # type: ignore
-        micursor.execute(
-            "SELECT * FROM usuarios WHERE email = %s AND contrasenia = %s",
-            (usuario, contraseña),
-        )
-        resultado = micursor.fetchone()
+
+        resultado = UsuarioRepository.iniciar_sesion(usuario, contraseña)
+        print(resultado)
         try:
 
             if resultado:
                 import session
+
                 session.current_user = resultado
                 messagebox.showinfo(
                     "Inicio de Sesión Exitoso", "Has iniciado sesión correctamente."
@@ -39,7 +33,7 @@ class IniciarSesion(CTk):
                 messagebox.showerror(
                     "Error de Inicio de Sesión", "Usuario o contraseña incorrectos."
                 )
-        except Error as e:
+        except Exception as e:
             messagebox.showerror("Hubo un error al iniciar sesión", f"Error: {e}")
 
     def abrir_registro(self):
@@ -117,7 +111,7 @@ class IniciarSesion(CTk):
             fg_color="#FFFFFF",
             text_color="#CC2D2D",
             font=("Arial", 20),
-            command=self.iniciar_sesion
+            command=self.iniciar_sesion,
         )
         self.boton_iniciar.place(relx=0.5, rely=0.6, anchor=CENTER)
 
@@ -132,3 +126,8 @@ class IniciarSesion(CTk):
             command=self.abrir_registro,
         )
         self.boton_registrar.place(relx=0.5, rely=0.7, anchor=CENTER)
+
+
+if __name__ == "__main__":
+    app = IniciarSesion()
+    app.mainloop()

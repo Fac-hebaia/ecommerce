@@ -25,19 +25,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 4. Estructura del proyecto
-
-- `practica_vectores/`: Ejercicios con vectores
-- `practica_matrices/`: Ejercicios con matrices
-
-Cada carpeta contiene archivos `problemaX.py` que puedes ejecutar individualmente:
-
-```bash
-python practica_vectores/problema1.py
-python practica_matrices/problema1.py
-```
-
-## 5. Recomendaciones
+## 4. Recomendaciones
 - Activa siempre el entorno virtual antes de instalar paquetes o ejecutar scripts.
 - Al instalar una dependencia nueva ejecutar:
 ```bash 
